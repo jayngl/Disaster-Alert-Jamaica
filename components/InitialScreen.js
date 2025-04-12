@@ -1,14 +1,14 @@
 // components/InitialScreen.js
-import React, { useEffect } from 'react';
-import { View, Image, StyleSheet, Text } from 'react-native';
-import alarmImage from '../assets/alarm.png'; 
+import React, { useEffect } from "react";
+import { View, Image, StyleSheet, Text } from "react-native";
+import alarmImage from "../assets/alarm.png";
 
 const InitialScreen = ({ navigation }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigation.reset({
         index: 0,
-        routes: [{ name: 'User' }],
+        routes: [{ name: "Home" }], // ✅ Correct screen name
       });
     }, 3000);
 
@@ -17,10 +17,7 @@ const InitialScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Image 
-        source={alarmImage} 
-        style={styles.icon}
-      />
+      <Image source={alarmImage} style={styles.icon} />
       <Text style={styles.appName}>Disaster Alert Jamaica</Text>
     </View>
   );
@@ -29,21 +26,22 @@ const InitialScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 16,
+    backgroundColor: "#ffffff",
   },
   icon: {
-    width: 100,  
-    height: 100, 
-    resizeMode: 'contain', 
-    marginBottom: 20, 
+    width: 100,
+    height: 100,
+    resizeMode: "contain",
+    marginBottom: 20,
   },
   appName: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#2c3e50', 
-    textAlign: 'center',
+    fontWeight: "bold",
+    color: "#2c3e50",
+    textAlign: "center",
   },
 });
 
