@@ -1,26 +1,41 @@
 // components/ViewAlertsScreen.js
-import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, Alert, TouchableOpacity } from 'react-native';
-import { firebaseApp } from '../firebaseConfig';
-import { getFirestore, collection, query, orderBy, onSnapshot } from 'firebase/firestore';
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  Alert,
+  TouchableOpacity,
+} from "react-native";
+import { firebaseApp } from "../firebaseConfig";
+import {
+  getFirestore,
+  collection,
+  query,
+  orderBy,
+  onSnapshot,
+} from "firebase/firestore";
 
 const ViewAlertsScreen = () => {
   const db = getFirestore(firebaseApp);
   const [alerts, setAlerts] = useState([]);
 
   useEffect(() => {
-    const alertsCollection = collection(db, 'EmergencyAlerts'); 
-    const alertsQuery = query(alertsCollection, orderBy('Issued', 'desc'));
+    const alertsCollection = collection(db, "EmergencyAlerts");
+    const alertsQuery = query(alertsCollection, orderBy("Issued", "desc"));
 
     const unsubscribe = onSnapshot(alertsQuery, (snapshot) => {
       const fetchedAlerts = snapshot.docs.map((doc) => {
         const data = doc.data();
         return {
           id: doc.id,
-          title: data.Headline || 'No Title',
-          description: data.description || 'No description provided',
-          location: data['Location '] || 'Location not specified',
-          date: data.Issued ? data.Issued.toDate().toLocaleString() : 'Date not available',
+          title: data.Headline || "No Title",
+          description: data.description || "No description provided",
+          location: data["Location "] || "Location not specified",
+          date: data.Issued
+            ? data.Issued.toDate().toLocaleString()
+            : "Date not available",
         };
       });
       setAlerts(fetchedAlerts);
@@ -30,7 +45,10 @@ const ViewAlertsScreen = () => {
   }, []);
 
   const renderAlertItem = ({ item }) => (
-    <TouchableOpacity style={styles.alertItem} onPress={() => Alert.alert(item.title, item.description)}>
+    <TouchableOpacity
+      style={styles.alertItem}
+      onPress={() => Alert.alert(item.title, item.description)}
+    >
       <Text style={styles.alertTitle}>{item.title}</Text>
       <Text style={styles.alertDate}>{item.date}</Text>
       <Text style={styles.alertDescription}>{item.description}</Text>
@@ -57,48 +75,44 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    backgroundColor: '#FAFAFA', 
+    backgroundColor: "#222431",
   },
   title: {
     fontSize: 26,
-    fontWeight: '700',
-    textAlign: 'center',
+    fontWeight: "700",
+    textAlign: "center",
     marginBottom: 25,
-    color: '#2F3640',
+    color: "#ffff",
   },
   listContainer: {
     paddingBottom: 20,
   },
   alertItem: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#333645",
     borderRadius: 15,
     padding: 20,
     marginBottom: 15,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 5,
+    shadowColor: "#000",
   },
   alertTitle: {
     fontSize: 20,
-    fontWeight: '600',
-    color: '#D32F2F',
+    fontWeight: "600",
+    color: "#D32F2F",
     marginBottom: 8,
   },
   alertDate: {
     fontSize: 14,
-    color: '#757575',
+    color: "#757575",
     marginBottom: 8,
   },
   alertDescription: {
     fontSize: 16,
-    color: '#3B3B3B',
+    color: "#ffff",
     marginBottom: 10,
   },
   alertLocation: {
     fontSize: 14,
-    color: '#007BFF',
-    fontWeight: '500',
+    color: "#007BFF",
+    fontWeight: "500",
   },
 });
